@@ -40,9 +40,6 @@ export default function Home() {
           <h1 className="text-2xl font-bold text-gray-800">{getGreeting()} 👋</h1>
           <p className="text-purple-500 font-medium text-sm mt-0.5">You're doing great.</p>
         </div>
-        <button className="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center text-xl">
-          🔔
-        </button>
       </div>
 
       {/* Today's Progress Card */}

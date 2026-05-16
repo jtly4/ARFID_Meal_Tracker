@@ -22,7 +22,7 @@ export async function getTodayMeals() {
     .from('meals')
     .select('*')
     .eq('date', today)
-    .order('meal_time', { ascending: true })
+    .order('meal_type', { ascending: true })
  
   if (error) console.error('Error fetching today meals:', error)
   return data || []
@@ -46,7 +46,7 @@ export async function getMealsForDate(date) {
     .from('meals')
     .select('*')
     .eq('date', date)
-    .order('meal_time', { ascending: true })
+    .order('meal_type', { ascending: true })
  
   if (error) console.error('Error fetching meals for date:', error)
   return data || []

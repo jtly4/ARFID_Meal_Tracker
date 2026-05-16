@@ -151,11 +151,6 @@ export default function History() {
                 </div>
               ))}
 
-              {/* Reflection prompt */}
-              <div className="bg-gray-50 border border-gray-100 rounded-2xl p-4 mt-1">
-                <p className="text-sm font-medium text-gray-600">Reflection</p>
-                <p className="text-xs text-gray-400 mt-1">What's one thing you're proud of today? →</p>
-              </div>
             </div>
           )}
         </div>
