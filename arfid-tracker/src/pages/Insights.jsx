@@ -168,7 +168,7 @@ export default function Insights() {
           )}
         </div>
       )}
-
+      
       {/* 💡 HINT: These tabs are placeholders — build them out if you have time! */}
       {tab === 'Foods' && (
         <div className="text-center py-16 text-gray-400">
