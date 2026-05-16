@@ -1,10 +1,9 @@
 import { createClient } from '@supabase/supabase-js'
 
 export const supabase = createClient(
-  'https://your-project.supabase.co',  // from your dashboard
-  'your-anon-public-key'               // from your dashboard
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
 )
-
 /* Example usage
 // Log a meal
 await supabase.from('meals').insert({
