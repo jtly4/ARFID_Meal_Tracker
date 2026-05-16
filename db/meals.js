@@ -5,11 +5,11 @@ import { supabase } from '../supabase'
 
 // ── CREATE ──────────────────────────────────────────────
 
-export async function logMeal({ date, meal_type, food_name, notes, mood }) {
+export async function logMeal({ date, meal_type, food_name, notes, mood, is_safe_food }) {
   // 💡 HINT: .insert() adds a new row. Pass an object matching your table columns.
   const { data, error } = await supabase
     .from('meals')
-    .insert({ date, meal_type, food_name, notes, mood })
+    .insert({ date, meal_type, food_name, notes, mood, is_safe_food })
 
   if (error) console.error('Error logging meal:', error)
   return data
@@ -43,8 +43,11 @@ export async function getMealsForWeek(startDate, endDate) {
 
 export async function getMealsForMonth(year, month) {
   // 💡 HINT: String formatting trick — padStart ensures month is always 2 digits (01, 02, etc.)
-  const start = `${year}-${String(month).padStart(2, '0')}-01`
-  const end = `${year}-${String(month).padStart(2, '0')}-31`
+  const startDate = new Date(year, month - 1, 1)
+  const endDate = new Date(year, month, 0)
+  
+  const start = startDate.toISOString().split('T')[0]
+  const end = endDate.toISOString().split('T')[0]
 
   const { data, error } = await supabase
     .from('meals')
