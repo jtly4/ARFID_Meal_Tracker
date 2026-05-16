@@ -2,13 +2,10 @@ import { useState, useEffect } from 'react'
 import { getSafeFoods, addSafeFood, deleteSafeFood } from '../db/safeFoods'
 
 export default function SafeFoods() {
-  const [foods, setFoods]     = useState([])
+  const [foods,   setFoods]   = useState([])
   const [newFood, setNewFood] = useState('')
 
-  // 💡 HINT: useEffect with [] runs once when the page loads — perfect for fetching initial data
-  useEffect(() => {
-    loadFoods()
-  }, [])
+  useEffect(() => { loadFoods() }, [])
 
   async function loadFoods() {
     const data = await getSafeFoods()
@@ -19,7 +16,7 @@ export default function SafeFoods() {
     if (!newFood.trim()) return
     await addSafeFood(newFood.trim())
     setNewFood('')
-    loadFoods() // 💡 HINT: Reload the list after adding so it reflects the new item
+    loadFoods()
   }
 
   async function handleDelete(id) {
@@ -28,22 +25,23 @@ export default function SafeFoods() {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">⭐ Safe Foods</h1>
+    <div className="px-4 pt-8">
+      <h1 className="text-2xl font-bold text-gray-800 mb-2">Safe Foods</h1>
+      <p className="text-sm text-gray-400 mb-6">Foods you know and trust.</p>
 
-      {/* Add new safe food */}
+      {/* Add input */}
       <div className="flex gap-2 mb-6">
         <input
           type="text"
           value={newFood}
           onChange={e => setNewFood(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && handleAdd()} // 💡 HINT: submit on Enter key
+          onKeyDown={e => e.key === 'Enter' && handleAdd()}
           placeholder="Add a safe food..."
-          className="flex-1 border rounded-lg px-3 py-2"
+          className="flex-1 border border-gray-100 bg-white rounded-xl px-4 py-2.5 text-sm shadow-sm"
         />
         <button
           onClick={handleAdd}
-          className="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold"
+          className="bg-purple-600 text-white px-4 py-2.5 rounded-xl font-semibold text-sm shadow-sm"
         >
           Add
         </button>
@@ -51,20 +49,25 @@ export default function SafeFoods() {
 
       {/* List */}
       {foods.length === 0 ? (
-        <p className="text-gray-400 text-center mt-10">No safe foods yet. Add one above!</p>
+        <div className="text-center py-16 text-gray-400">
+          <p className="text-4xl mb-3">⭐</p>
+          <p className="font-medium">No safe foods yet</p>
+          <p className="text-sm mt-1">Add foods you feel comfortable eating</p>
+        </div>
       ) : (
-        <ul className="space-y-2">
+        <ul className="flex flex-col gap-2">
           {foods.map(food => (
             <li
               key={food.id}
-              className="flex items-center justify-between bg-white border rounded-xl px-4 py-3"
+              className="flex items-center justify-between bg-white border border-gray-100 rounded-xl px-4 py-3 shadow-sm"
             >
-              <span className="font-medium">{food.food_name}</span>
-              {/* 💡 HINT: Person A — you can make this a trash icon using an emoji or
-                  install lucide-react for a proper icon: npm install lucide-react */}
+              <div className="flex items-center gap-3">
+                <span className="text-purple-400">⭐</span>
+                <span className="font-medium text-gray-700 text-sm">{food.food_name}</span>
+              </div>
               <button
                 onClick={() => handleDelete(food.id)}
-                className="text-red-400 hover:text-red-600 text-sm"
+                className="text-gray-300 hover:text-red-400 transition-colors text-sm"
               >
                 ✕
               </button>

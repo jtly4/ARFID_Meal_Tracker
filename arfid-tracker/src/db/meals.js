@@ -16,6 +16,42 @@ export async function logMeal({ date, meal_type, food_name, notes, mood, is_safe
 }
 
 // ── READ ─────────────────────────────────────────────────
+export async function getTodayMeals() {
+  const today = new Date().toISOString().split('T')[0]
+  const { data, error } = await supabase
+    .from('meals')
+    .select('*')
+    .eq('date', today)
+    .order('meal_time', { ascending: true })
+ 
+  if (error) console.error('Error fetching today meals:', error)
+  return data || []
+}
+
+export async function getRecentMeals(limit = 5) {
+  // 💡 HINT: .limit() caps results. Returns the most recently logged meals for quick-fill.
+  const { data, error } = await supabase
+    .from('meals')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(limit)
+ 
+  if (error) console.error('Error fetching recent meals:', error)
+  return data || []
+}
+
+export async function getMealsForDate(date) {
+  // 💡 HINT: Used by History page to show meals for a selected day
+  const { data, error } = await supabase
+    .from('meals')
+    .select('*')
+    .eq('date', date)
+    .order('meal_time', { ascending: true })
+ 
+  if (error) console.error('Error fetching meals for date:', error)
+  return data || []
+}
+
 
 export async function getMeals() {
   // 💡 HINT: .order() sorts results. 'created_at' descending = newest first.
