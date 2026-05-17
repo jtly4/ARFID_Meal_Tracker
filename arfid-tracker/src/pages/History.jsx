@@ -5,7 +5,7 @@ const DAYS    = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const MEAL_ICONS = { breakfast: '🌅', lunch: '☀️', dinner: '🌙', snack: '🍎' }
 
 const MOOD_EMOJIS = {
-  very_hard: '😣', hard: '😟', okay: '😐', good: '🙂', very_good: '😄'
+  very_hard: '/very_hard.png', hard: '/hard.png', okay: '/ok.png', good: '/good.png', very_good: '/very_good.png'
 }
 
 export default function History() {
@@ -145,8 +145,8 @@ export default function History() {
                       </div>
                     </div>
                   </div>
-                  {meal.mood && (
-                    <span className="text-xl">{MOOD_EMOJIS[meal.mood] || ''}</span>
+                  {meal.mood && MOOD_EMOJIS[meal.mood] && (
+                    <img src={MOOD_EMOJIS[meal.mood]} alt={meal.mood} className="w-8 h-8 object-contain" />
                   )}
                 </div>
               ))}

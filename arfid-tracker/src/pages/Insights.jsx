@@ -113,7 +113,7 @@ export default function Insights() {
             <div className="bg-white rounded-2xl p-4 shadow-sm">
               <p className="text-xs text-gray-400 mb-1">Meals logged</p>
               <p className="text-3xl font-bold text-gray-800">{meals.length}</p>
-              {diff !== 0 && (
+              {diff > 0 && (
                 <p className={`text-xs mt-1 font-medium ${diff > 0 ? 'text-green-500' : 'text-red-400'}`}>
                   {diff > 0 ? `+${diff}` : diff} from last week
                 </p>
