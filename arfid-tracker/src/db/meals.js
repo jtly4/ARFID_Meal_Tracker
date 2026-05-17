@@ -41,16 +41,24 @@ export async function getTodayMeals() {
   return data || []
 }
 
-export async function getRecentMeals(limit = 5) {
+export async function getRecentMeals(limit = 3) {
   // 💡 HINT: .limit() caps results. Returns the most recently logged meals for quick-fill.
   const { data, error } = await supabase
     .from('meals')
     .select('*')
     .order('created_at', { ascending: false })
-    .limit(limit)
+    .limit(100)
  
   if (error) console.error('Error fetching recent meals:', error)
-  return data || []
+
+  const map = new Map()
+
+  for (const meal of data || []) {
+    const key = meal.food_name.trim().toLowerCase()
+    if (!map.has(key)) map.set(key, meal)
+  }
+
+  return Array.from(map.values()).slice(0, limit)
 }
 
 export async function getMealsForDate(date) {
