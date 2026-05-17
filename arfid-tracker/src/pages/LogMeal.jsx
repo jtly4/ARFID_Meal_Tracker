@@ -61,6 +61,12 @@ export default function LogMeal() {
     setIsSafeFood(meal.is_safe_food || false)
   }
 
+  function formatMealTime(date, mealTime) {
+    if (!date || !mealTime) return ''
+    const timestamp = `${date}T${mealTime}`
+    return new Date(timestamp).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })
+}
+
   if (success) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen px-6 text-center">
@@ -83,7 +89,7 @@ export default function LogMeal() {
           </div>
           <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-gray-500">
             <div><span className="text-gray-400">Meal</span><p className="capitalize font-medium text-gray-700">{mealType}</p></div>
-            <div><span className="text-gray-400">Time</span><p className="font-medium text-gray-700">{mealTime}</p></div>
+            <div><span className="text-gray-400">Time</span><p className="font-medium text-gray-700">{formatMealTime(date, mealTime)}</p></div>
             {mood && <div><span className="text-gray-400">How it went</span><p className="font-medium text-gray-700">{MOODS.find(m => m.value === mood)?.emoji} {MOODS.find(m => m.value === mood)?.label}</p></div>}
             {notes && <div className="col-span-2"><span className="text-gray-400">Notes</span><p className="font-medium text-gray-700">{notes}</p></div>}
           </div>
