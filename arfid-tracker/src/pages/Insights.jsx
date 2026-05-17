@@ -27,7 +27,7 @@ function getWeekRange() {
   monday.setDate(now.getDate() - ((day + 6) % 7))
   const sunday = new Date(monday)
   sunday.setDate(monday.getDate() + 6)
-  const fmt = d => d.toISOString().split('T')[0]
+  const fmt = d => d.toLocaleDateString('en-CA')
   return { start: fmt(monday), end: fmt(sunday) }
 }
 
@@ -58,7 +58,7 @@ export default function Insights() {
     // Last week for comparison
     const lastStart = new Date(start); lastStart.setDate(lastStart.getDate() - 7)
     const lastEnd   = new Date(end);   lastEnd.setDate(lastEnd.getDate() - 7)
-    const fmt = d => d.toISOString().split('T')[0]
+    const fmt = d => d.toLocaleDateString('en-CA')
     const prev = await getMealsForWeek(fmt(lastStart), fmt(lastEnd))
     setLastWeek(prev)
   }

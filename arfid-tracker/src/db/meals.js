@@ -17,7 +17,7 @@ export async function logMeal({ date, meal_type, food_name, notes, mood, is_safe
 
 // ── READ ─────────────────────────────────────────────────
 export async function getTodayMeals() {
-  const today = new Date().toISOString().split('T')[0]
+  const today = new Date().toLocaleDateString('en-CA')
   const { data, error } = await supabase
     .from('meals')
     .select('*')
@@ -82,8 +82,8 @@ export async function getMealsForMonth(year, month) {
   const startDate = new Date(year, month - 1, 1)
   const endDate = new Date(year, month, 0)
   
-  const start = startDate.toISOString().split('T')[0]
-  const end = endDate.toISOString().split('T')[0]
+  const start = startDate.toLocaleDateString('en-CA')
+  const end = endDate.toLocaleDateString('en-CA')
 
   const { data, error } = await supabase
     .from('meals')

@@ -24,7 +24,7 @@ export default function LogMeal() {
   const [foodName,    setFoodName]    = useState('')
   const [notes,       setNotes]       = useState('')
   const [mood,        setMood]        = useState('')
-  const [date,        setDate]        = useState(new Date().toISOString().split('T')[0])
+  const [date,        setDate]        = useState(new Date().toLocaleDateString('en-CA'))
   const [mealTime,    setMealTime]    = useState(
     new Date().toTimeString().slice(0, 5) // 💡 HINT: "HH:MM" format from current time
   )

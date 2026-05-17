@@ -13,7 +13,7 @@ export default function History() {
   const [year,       setYear]       = useState(now.getFullYear())
   const [month,      setMonth]      = useState(now.getMonth() + 1)
   const [loggedDays, setLoggedDays] = useState(new Set())
-  const [selected,   setSelected]   = useState(now.toISOString().split('T')[0])
+  const [selected,   setSelected]   = useState(now.toLocaleDateString('en-CA'))
   const [dayMeals,   setDayMeals]   = useState([])
 
   useEffect(() => { loadMonth() }, [year, month])
@@ -53,7 +53,7 @@ export default function History() {
   }
 
   const cells     = buildCalendarDays()
-  const today     = now.toISOString().split('T')[0]
+  const today     = now.toLocaleDateString('en-CA')
   const monthLabel = new Date(year, month - 1).toLocaleString('default', { month: 'long', year: 'numeric' })
 
   // Format selected date nicely
