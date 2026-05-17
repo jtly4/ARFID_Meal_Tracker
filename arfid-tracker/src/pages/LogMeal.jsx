@@ -63,7 +63,7 @@ export default function LogMeal() {
 
     await logMeal({
       date,
-      meal_time:   mealTime,
+      time:        mealTime,
       meal_type:   mealType,
       food_name:   foodName.trim(),
       notes,

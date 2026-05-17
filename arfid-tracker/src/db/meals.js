@@ -6,11 +6,11 @@ import { addSafeFood } from './safeFoods'
 
 // ── CREATE ──────────────────────────────────────────────
 
-export async function logMeal({ date, meal_type, food_name, notes, mood, is_safe_food }) {
+export async function logMeal({ date, time, meal_type, food_name, notes, mood, is_safe_food }) {
   // 💡 HINT: .insert() adds a new row. Pass an object matching your table columns.
   const { data, error } = await supabase
     .from('meals')
-    .insert({ date, meal_type, food_name, notes, mood, is_safe_food })
+    .insert({ date, time, meal_type, food_name, notes, mood, is_safe_food })
 
   if (error) console.error('Error logging meal:', error)
   if (is_safe_food) await addSafeFood(food_name)
@@ -35,7 +35,7 @@ export async function getTodayMeals() {
     .from('meals')
     .select('*')
     .eq('date', today)
-    .order('meal_type', { ascending: true })
+    .order('time', { ascending: true })
  
   if (error) console.error('Error fetching today meals:', error)
   return data || []
@@ -59,7 +59,7 @@ export async function getMealsForDate(date) {
     .from('meals')
     .select('*')
     .eq('date', date)
-    .order('meal_type', { ascending: true })
+    .order('time', { ascending: true })
  
   if (error) console.error('Error fetching meals for date:', error)
   return data || []
@@ -71,7 +71,7 @@ export async function getMeals() {
   const { data, error } = await supabase
     .from('meals')
     .select('*')
-    .order('created_at', { ascending: false })
+    .order('time', { ascending: true })
 
   if (error) console.error('Error fetching meals:', error)
   return data || []

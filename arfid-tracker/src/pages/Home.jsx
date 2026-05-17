@@ -24,9 +24,10 @@ export default function Home() {
     setMeals(data)
   }
 
-  const safeMeals    = meals.filter(m => m.is_safe_food).length
-  const totalMeals   = meals.length
-  const progress     = Math.min(totalMeals / GOAL, 1)
+  const safeMeals           = meals.filter(m => m.is_safe_food).length
+  const outsideComfortMeals = meals.filter(m => !m.is_safe_food).length
+  const totalMeals          = meals.length
+  const progress            = Math.min(totalMeals / GOAL, 1)
 
   // Which meal types have been logged today
   const loggedTypes  = new Set(meals.map(m => m.meal_type))
@@ -73,10 +74,12 @@ export default function Home() {
               <span className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-xs">✓</span>
               <span className="text-gray-600">{safeMeals} Safe meal{safeMeals !== 1 ? 's' : ''}</span>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <span className="w-5 h-5 rounded-full bg-yellow-100 flex items-center justify-center text-xs">★</span>
-              <span className="text-gray-600">{Math.max(totalMeals - safeMeals, 0)} New food{totalMeals - safeMeals !== 1 ? 's' : ''}</span>
-            </div>
+            {outsideComfortMeals > 0 && (
+              <div className="flex items-center gap-2 text-sm">
+                <span className="w-5 h-5 rounded-full bg-yellow-100 flex items-center justify-center text-xs">★</span>
+                <span className="text-gray-600">{outsideComfortMeals} Outside comfort</span>
+              </div>
+            )}
             <p className="text-xs text-gray-400 mt-1">Every bite counts. You've got this. 💜</p>
           </div>
         </div>
