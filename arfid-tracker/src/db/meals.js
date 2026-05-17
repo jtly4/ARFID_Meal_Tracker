@@ -108,6 +108,24 @@ export async function getMealsForMonth(year, month) {
   return data || []
 }
 
+export async function getMealById(id) {
+  const { data, error } = await supabase
+    .from('meals')
+    .select('*')
+    .eq('id', id)
+    .single()
+  if (error) console.error('Error fetching meal: ', error)
+  return data
+}
+
+export async function updateMeal(id, updates){
+  const { error } = await supabase
+    .from('meals')
+    .update(updates)
+    .eq('id', id)
+  if (error) console.error('Error updating meal: ', error)
+}
+
 // ── DELETE ────────────────────────────────────────────────
 
 export async function deleteMeal(id) {

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getTodayMeals } from '../db/meals'
+import { getTodayMeals, formatMealTime } from '../db/meals'
 
 const MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snack']
 const MEAL_ICONS = { breakfast: '🌅', lunch: '☀️', dinner: '🌙', snack: '🍎' }
 const GOAL = 3 // target meals per day — adjust as needed
+const MOOD_EMOJIS = { very_hard: '/very_hard.png', hard: '/hard.png', okay: '/ok.png', good: '/good.png', very_good: '/very_good.png'}
+
 
 function getGreeting() {
   const h = new Date().getHours()
@@ -12,6 +14,7 @@ function getGreeting() {
   if (h < 17) return 'Good afternoon'
   return 'Good evening'
 }
+
 
 export default function Home() {
   const navigate  = useNavigate()
@@ -112,31 +115,32 @@ export default function Home() {
       </div>
 
       {/* Today's meal log */}
-      {meals.length > 0 && (
-        <div className="mt-4">
-          <p className="text-sm font-semibold text-gray-700 mb-3">Today's Log</p>
-          <div className="flex flex-col gap-2">
-            {meals.map(meal => (
-              <div key={meal.id} className="bg-white rounded-2xl px-4 py-3 shadow-sm flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-xl">{MEAL_ICONS[meal.meal_type]}</span>
-                  
-                  <div>
-                    <p className="font-medium text-gray-800 text-sm">{meal.food_name}</p>
-                    
-                    <p className="text-xs text-gray-400 capitalize">
-                      {meal.meal_type}{meal.meal_time ? ` • ${meal.meal_time.slice(0, 5)}` : ''}
-                    </p>
-                  </div>
-                </div>
-                {meal.is_safe_food && (
-                  <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Safe</span>
-                )}
-              </div>
-            ))}
-          </div>
+      {meals.map(meal => (
+  <button key={meal.id}
+    onClick={() => navigate('/log', { state: { editId: meal.id } })} 
+    className="bg-white rounded-2xl px-4 py-3 shadow-sm flex items-center justify-between w-full text-left">
+    <div className="flex items-center gap-3">
+      <span className="text-xl">{MEAL_ICONS[meal.meal_type]}</span>
+      <div>
+        <div className="flex items-center gap-2">
+          <p className="font-medium text-gray-800 text-sm">{meal.food_name}</p>
+          {meal.is_safe_food && (
+            <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Safe</span>
+          )}
         </div>
-      )}
+        <div className="flex items-center gap-2 mt-0.5">
+          {meal.time && (
+            <p className="text-xs text-gray-400">{formatMealTime(meal.date, meal.time)}</p>
+          )}
+          <p className="text-xs text-gray-400 capitalize">{meal.meal_type}</p>
+        </div>
+      </div>
+    </div>
+    {meal.mood && MOOD_EMOJIS[meal.mood] && (
+                    <img src={MOOD_EMOJIS[meal.mood]} alt={meal.mood} className="w-8 h-8 object-contain" />
+                  )}
+  </button>
+))}
 
       {/* ARFID Support Card */}
       <div className="bg-purple-50 rounded-2xl p-5 shadow-sm flex items-center justify-between">

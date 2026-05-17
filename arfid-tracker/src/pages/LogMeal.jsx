@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { logMeal, searchMeals, getRecentMeals, formatMealTime } from '../db/meals'
+import { logMeal, getMealById, updateMeal, deleteMeal, searchMeals, getRecentMeals } from '../db/meals'
 
 const MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snack']
 const MEAL_ICONS = { breakfast: '🌅', lunch: '☀️', dinner: '🌙', snack: '🍎' }
@@ -19,6 +19,8 @@ export default function LogMeal() {
 
   // 💡 HINT: If user tapped a meal type on the home page, it's pre-selected via route state
   const preselected = location.state?.meal_type || 'breakfast'
+  const editId = location.state?.editId || null
+  const isEditing = !!editId
 
   const [mealType,    setMealType]    = useState(preselected)
   const [foodName,    setFoodName]    = useState('')
@@ -39,6 +41,20 @@ export default function LogMeal() {
   useEffect(() => { loadRecent() }, [])
 
   useEffect(() => {
+    if (!editId) return
+    getMealById(editId).then(meal => {
+      if (!meal) return
+      setMealType(meal.meal_type)
+      setFoodName(meal.food_name)
+      setNotes(meal.notes || '')
+      setMood(meal.mood || '')
+      setDate(meal.date)
+      setMealTime(meal.meal_time?.slice(0, 5) || '')
+      setIsSafeFood(meal.is_safe_food || false)
+    })
+  }, [editId])
+
+  useEffect(() => {
     if (!search.trim()) { 
       setSearchResults([])
       return
@@ -53,6 +69,12 @@ export default function LogMeal() {
   return () => clearTimeout(delay)
   }, [search])
 
+  async function handleDelete() {
+    if (!confirm('Delete this meal entry?')) return
+    await deleteMeal(editId)
+    navigate('/')
+  }
+
   async function loadRecent() {
     const data = await getRecentMeals(3) // last 3 meals
     setRecentMeals(data)
@@ -61,15 +83,26 @@ export default function LogMeal() {
   async function handleSubmit() {
     if (!foodName.trim()) return alert('Please enter a food name!')
 
+    if (isEditing) {
+      await updateMeal(editId, {
+        date,
+        meal_time:    mealTime,
+        meal_type:    mealType,
+        food_name:    foodName.trim(),
+        notes,
+        mood:         mood || null,
+        is_safe_food: isSafeFood,
+      })
+    } else {
     await logMeal({
       date,
-      time:        mealTime,
+      meal_time:        mealTime,
       meal_type:   mealType,
       food_name:   foodName.trim(),
       notes,
       mood:        mood || null,
       is_safe_food: isSafeFood,
-    })
+    }) }
 
     setSuccess(true)
   }
@@ -141,9 +174,24 @@ export default function LogMeal() {
 
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <button onClick={() => navigate(-1)} className="text-gray-400 text-xl">‹</button>
-        <h1 className="text-xl font-bold text-gray-800">Log a Meal</h1>
+        <div className="flex items-center gap-3">
+          <button onClick={() => navigate(-1)} className="text-gray-400 text-xl">‹</button>
+          <h1 className="text-xl font-bold text-gray-800">
+            {isEditing ? 'Edit Meal' : 'Log a Meal'}</h1>
+        </div>
+        {isEditing && (
+          <button onClick={handleDelete} className="text-red-400 text-sm font-medium">
+            Delete
+          </button>
+        )}
       </div>
+
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-purple-600 text-white font-semibold py-3 rounded-xl shadow-md"
+      >
+        {isEditing ? 'Save Changes' : 'Save Meal'}
+      </button>
 
       <p className="text-sm text-gray-400 mb-4">What did you have? It's okay if it's the same as always.</p>
 
