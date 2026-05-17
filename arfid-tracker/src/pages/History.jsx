@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { getMealsForMonth, getMealsForDate, formatMealTime } from '../db/meals'
 
 const DAYS    = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -18,9 +18,15 @@ export default function History() {
   const [dayMeals,   setDayMeals]   = useState([])
 
   const navigate = useNavigate()
+  const location = useLocation()
+
 
   useEffect(() => { loadMonth() }, [year, month])
   useEffect(() => { if (selected) loadDayMeals(selected) }, [selected])
+  useEffect(() => {
+    if (selected) loadDayMeals(selected)
+    loadMonth()
+  }, [location.key])
 
   async function loadMonth() {
     const data = await getMealsForMonth(year, month)
