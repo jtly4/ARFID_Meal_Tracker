@@ -263,7 +263,6 @@ export default function LogMeal() {
                   ${selectedRecentId === meal.id ? 'border-purple-400 bg-purple-50' : 'border-gray-100'}`}
               >
                 <div className="flex items-center gap-3">
-                  <span>{MEAL_ICONS[meal.meal_type]}</span>
                   <div className="text-left">
                     <p className="font-medium text-gray-700">{meal.food_name}</p>
                     {meal.is_safe_food && (
