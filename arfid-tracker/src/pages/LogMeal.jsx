@@ -6,11 +6,11 @@ const MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snack']
 const MEAL_ICONS = { breakfast: '🌅', lunch: '☀️', dinner: '🌙', snack: '🍎' }
 
 const MOODS = [
-  { value: 'very_hard', emoji: '😣', label: 'Very hard' },
-  { value: 'hard',      emoji: '😟', label: 'Hard' },
-  { value: 'okay',      emoji: '😐', label: 'Okay' },
-  { value: 'good',      emoji: '🙂', label: 'Good' },
-  { value: 'very_good', emoji: '😄', label: 'Very good' },
+  { value: 'very_hard', emoji: '/very_hard.png', label: 'Very hard' },
+  { value: 'hard',      emoji: '/hard.png', label: 'Hard' },
+  { value: 'okay',      emoji: '/ok.png', label: 'Okay' },
+  { value: 'good',      emoji: '/good.png', label: 'Good' },
+  { value: 'very_good', emoji: '/very_good.png', label: 'Very good' },
 ]
 
 export default function LogMeal() {
@@ -111,7 +111,12 @@ export default function LogMeal() {
           <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-gray-500">
             <div><span className="text-gray-400">Meal</span><p className="capitalize font-medium text-gray-700">{mealType}</p></div>
             <div><span className="text-gray-400">Time</span><p className="font-medium text-gray-700">{formatMealTime(date, mealTime)}</p></div>
-            {mood && <div><span className="text-gray-400">How it went</span><p className="font-medium text-gray-700">{MOODS.find(m => m.value === mood)?.emoji} {MOODS.find(m => m.value === mood)?.label}</p></div>}
+            {mood && <div><span className="text-gray-400">How it went</span>
+              <div className="flex items-center gap-1 mt-0.5">
+                <img src={MOODS.find(m => m.value === mood)?.emoji} alt={mood} className="w-5 h-5 object-contain" />
+                <p className="font-medium text-gray-700">{MOODS.find(m => m.value === mood)?.label}</p>
+              </div>
+            </div>}
             {notes && <div className="col-span-2"><span className="text-gray-400">Notes</span><p className="font-medium text-gray-700">{notes}</p></div>}
           </div>
         </div>
@@ -260,7 +265,7 @@ export default function LogMeal() {
               className={`flex flex-col items-center gap-1 flex-1 py-2 rounded-xl transition-all
                 ${mood === m.value ? 'bg-purple-50 border border-purple-300' : ''}`}
             >
-              <span className="text-2xl">{m.emoji}</span>
+              <img src={m.emoji} alt={m.label} className="w-10 h-10 object-contain" />
               <span className="text-xs text-gray-500">{m.label}</span>
             </button>
           ))}

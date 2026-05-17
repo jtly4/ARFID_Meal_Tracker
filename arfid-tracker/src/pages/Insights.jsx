@@ -22,9 +22,10 @@ const TABS = ['Overview', 'Foods', 'Feelings', 'Trends']
 
 function getWeekRange(offset = 0) {
   const now    = new Date()
+  console.log('today:', now.toDateString(), 'getDay():', now.getDay())
   const day    = now.getDay()
   const monday = new Date(now)
-  monday.setDate(now.getDate() - ((day + 7) % 7) + offset * 7)
+  monday.setDate(now.getDate() - ((day + 5) % 7) + offset * 7)
 
   // 💡 HINT: Build YYYY-MM-DD manually from local date parts — avoids UTC timezone shift
   const fmt = d => {
