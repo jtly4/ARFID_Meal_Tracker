@@ -126,7 +126,9 @@ export default function History() {
           ) : (
             <div className="flex flex-col gap-2">
               {dayMeals.map(meal => (
-                <div key={meal.id} className="bg-white rounded-2xl px-4 py-3 shadow-sm flex items-center justify-between">
+                <button key={meal.id} 
+                onClick={() => navigate('/log', { state: { editId: meal.id } })}
+                className="bg-white rounded-2xl px-4 py-3 shadow-sm flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <span className="text-xl">{MEAL_ICONS[meal.meal_type] || '🍽'}</span>
                     <div>
@@ -148,7 +150,7 @@ export default function History() {
                   {meal.mood && MOOD_EMOJIS[meal.mood] && (
                     <img src={MOOD_EMOJIS[meal.mood]} alt={meal.mood} className="w-8 h-8 object-contain" />
                   )}
-                </div>
+                </button>
               ))}
 
             </div>

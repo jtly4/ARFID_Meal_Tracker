@@ -116,31 +116,31 @@ export default function Home() {
 
       {/* Today's meal log */}
       {meals.map(meal => (
-  <button key={meal.id}
-    onClick={() => navigate('/log', { state: { editId: meal.id } })} 
-    className="bg-white rounded-2xl px-4 py-3 shadow-sm flex items-center justify-between w-full text-left">
-    <div className="flex items-center gap-3">
-      <span className="text-xl">{MEAL_ICONS[meal.meal_type]}</span>
-      <div>
-        <div className="flex items-center gap-2">
-          <p className="font-medium text-gray-800 text-sm">{meal.food_name}</p>
-          {meal.is_safe_food && (
-            <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Safe</span>
+        <button key={meal.id}
+          onClick={() => navigate('/log', { state: { editId: meal.id } })} 
+          className="bg-white rounded-2xl px-4 py-3 shadow-sm flex items-center justify-between w-full text-left">
+          <div className="flex items-center gap-3">
+            <span className="text-xl">{MEAL_ICONS[meal.meal_type]}</span>
+            <div>
+              <div className="flex items-center gap-2">
+                <p className="font-medium text-gray-800 text-sm">{meal.food_name}</p>
+                {meal.is_safe_food && (
+                  <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Safe</span>
+                )}
+              </div>
+              <div className="flex items-center gap-2 mt-0.5">
+                {meal.time && (
+                  <p className="text-xs text-gray-400">{formatMealTime(meal.date, meal.time)}</p>
+                )}
+                <p className="text-xs text-gray-400 capitalize">{meal.meal_type}</p>
+              </div>
+            </div>
+          </div>
+          {meal.mood && MOOD_EMOJIS[meal.mood] && (
+            <img src={MOOD_EMOJIS[meal.mood]} alt={meal.mood} className="w-8 h-8 object-contain" />
           )}
-        </div>
-        <div className="flex items-center gap-2 mt-0.5">
-          {meal.time && (
-            <p className="text-xs text-gray-400">{formatMealTime(meal.date, meal.time)}</p>
-          )}
-          <p className="text-xs text-gray-400 capitalize">{meal.meal_type}</p>
-        </div>
-      </div>
-    </div>
-    {meal.mood && MOOD_EMOJIS[meal.mood] && (
-                    <img src={MOOD_EMOJIS[meal.mood]} alt={meal.mood} className="w-8 h-8 object-contain" />
-                  )}
-  </button>
-))}
+        </button>
+      ))}
 
       {/* ARFID Support Card */}
       <div className="bg-purple-50 rounded-2xl p-5 shadow-sm flex items-center justify-between">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { logMeal, getMealById, updateMeal, deleteMeal, searchMeals, getRecentMeals } from '../db/meals'
+import { logMeal, getMealById, updateMeal, deleteMeal, searchMeals, getRecentMeals, formatMealTime } from '../db/meals'
 
 const MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snack']
 const MEAL_ICONS = { breakfast: '🌅', lunch: '☀️', dinner: '🌙', snack: '🍎' }
@@ -49,7 +49,7 @@ export default function LogMeal() {
       setNotes(meal.notes || '')
       setMood(meal.mood || '')
       setDate(meal.date)
-      setMealTime(meal.meal_time?.slice(0, 5) || '')
+      setMealTime(meal.time?.slice(0, 5) || '')
       setIsSafeFood(meal.is_safe_food || false)
     })
   }, [editId])
@@ -86,7 +86,7 @@ export default function LogMeal() {
     if (isEditing) {
       await updateMeal(editId, {
         date,
-        meal_time:    mealTime,
+        time:    mealTime,
         meal_type:    mealType,
         food_name:    foodName.trim(),
         notes,
@@ -96,7 +96,7 @@ export default function LogMeal() {
     } else {
     await logMeal({
       date,
-      meal_time:        mealTime,
+      time:        mealTime,
       meal_type:   mealType,
       food_name:   foodName.trim(),
       notes,
@@ -186,12 +186,7 @@ export default function LogMeal() {
         )}
       </div>
 
-      <button
-        onClick={handleSubmit}
-        className="w-full bg-purple-600 text-white font-semibold py-3 rounded-xl shadow-md"
-      >
-        {isEditing ? 'Save Changes' : 'Save Meal'}
-      </button>
+      
 
       <p className="text-sm text-gray-400 mb-4">What did you have? It's okay if it's the same as always.</p>
 
@@ -323,7 +318,7 @@ export default function LogMeal() {
         onClick={handleSubmit}
         className="w-full bg-purple-600 text-white font-semibold py-3 rounded-xl shadow-md"
       >
-        Save Meal
+        {isEditing ? 'Save Changes' : 'Save Meal'}
       </button>
     </div>
   )
