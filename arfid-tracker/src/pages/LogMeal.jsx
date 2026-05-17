@@ -48,7 +48,7 @@ export default function LogMeal() {
       meal_type:   mealType,
       food_name:   foodName.trim(),
       notes,
-      mood,
+      mood:        mood || null,
       is_safe_food: isSafeFood,
     })
 
@@ -102,7 +102,7 @@ export default function LogMeal() {
         <button onClick={() => navigate('/')} className="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold mb-3">
           Back to Home
         </button>
-        <button onClick={() => { setSuccess(false); setFoodName(''); setNotes(''); setMood('') }}
+        <button onClick={() => { setSuccess(false); setFoodName(''); setNotes(''); setMood(''); loadRecent() }}
           className="text-purple-600 text-sm font-medium">
           Log another meal
         </button>
