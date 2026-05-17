@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { getMealsForMonth, getMealsForDate, formatMealTime } from '../db/meals'
 
 const DAYS    = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -15,6 +16,8 @@ export default function History() {
   const [loggedDays, setLoggedDays] = useState(new Set())
   const [selected,   setSelected]   = useState(now.toLocaleDateString('en-CA'))
   const [dayMeals,   setDayMeals]   = useState([])
+
+  const navigate = useNavigate()
 
   useEffect(() => { loadMonth() }, [year, month])
   useEffect(() => { if (selected) loadDayMeals(selected) }, [selected])
