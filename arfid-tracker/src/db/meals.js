@@ -18,6 +18,16 @@ export async function logMeal({ date, meal_type, food_name, notes, mood, is_safe
   return data
 }
 
+export async function searchMeals(query) {
+  const {data, error} = await supabase
+    .from('meals')
+    .select('*')
+    .ilike('food_name', `%${query}%`)
+  
+  if (error) console.error('Search error:', error)
+  return data || []
+}
+
 // ── READ ─────────────────────────────────────────────────
 export async function getTodayMeals() {
   const today = new Date().toLocaleDateString('en-CA')

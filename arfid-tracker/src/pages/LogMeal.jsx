@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { logMeal, getRecentMeals } from '../db/meals'
+import { logMeal, searchMeals, getRecentMeals } from '../db/meals'
 
 const MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snack']
 const MEAL_ICONS = { breakfast: '🌅', lunch: '☀️', dinner: '🌙', snack: '🍎' }
@@ -30,9 +30,26 @@ export default function LogMeal() {
   )
   const [isSafeFood,  setIsSafeFood]  = useState(false)
   const [recentMeals, setRecentMeals] = useState([])
+  const [search,      setSearch]      = useState('')
+  const [searchResults, setSearchResults] = useState([])
   const [success,     setSuccess]     = useState(false)
 
   useEffect(() => { loadRecent() }, [])
+
+  useEffect(() => {
+    if (!search.trim()) { 
+      setSearchResults([])
+      return
+    }
+
+    const delay = setTimeout(async () => {
+      const results = await searchMeals(search)
+      const unique = Array.from(new Map(results.map(meal => [meal.food_name, meal])).values())
+      setSearchResults(unique)
+    }, 300)
+
+  return () => clearTimeout(delay)
+  }, [search])
 
   async function loadRecent() {
     const data = await getRecentMeals(3) // last 3 meals
@@ -152,6 +169,30 @@ export default function LogMeal() {
         </label>
       </div>
 
+      {/* Food name search/input */}
+      <div className="mb-4 relative">
+        <span className="text-xs text-gray-400 block mb-1">Food name</span>
+        <input type="text" value={foodName} onChange={(e) => {setFoodName(e.target.value); setSearch(e.target.value)}}
+          placeholder="Type or search foods..."
+          className="w-full border border-gray-100 bg-white rounded-xl px-3 py-2 text-sm"/>
+        {search.trim() && searchResults.length > 0 && (
+          <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-gray-100 rounded-xl shadow-lg z-50 max-h-60 overflow-y-auto">
+            {searchResults.map(meal => (
+              <div key={meal.id} onClick={() => {
+                setFoodName(meal.food_name); setSearch(''); setSearchResults([]); setIsSafeFood(meal.is_safe_food || false)
+              }}
+              className="px-4 py-3 hover:bg-gray-50 cursor-pointer flex justify-between items-center">
+                <div>
+                  <p className="font-medium text-gray-700">{meal.food_name}</p>
+                  <p className="text-xs text-gray-400">{meal.meal_type} • {meal.date}</p>
+                </div>
+                <span className="text-xs text-gray-400">↵</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Recent meals quick-fill */}
       {recentMeals.length > 0 && (
         <div className="mb-4">
@@ -179,18 +220,6 @@ export default function LogMeal() {
           </div>
         </div>
       )}
-
-      {/* Food name input */}
-      <label className="block mb-4">
-        <span className="text-xs text-gray-400 block mb-1">Or type a food</span>
-        <input
-          type="text"
-          value={foodName}
-          onChange={e => setFoodName(e.target.value)}
-          placeholder="e.g. mac and cheese"
-          className="w-full border border-gray-100 bg-white rounded-xl px-3 py-2 text-sm"
-        />
-      </label>
 
       {/* Safe food toggle */}
       <div className="flex items-center justify-between bg-white border border-gray-100 rounded-xl px-4 py-3 mb-4">
