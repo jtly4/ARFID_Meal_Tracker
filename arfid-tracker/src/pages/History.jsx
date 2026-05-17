@@ -113,7 +113,7 @@ export default function History() {
                 `}
               >
                 {day}
-                {/* dot indicator for logged days */}
+                {/* Dot indicator for logged days */}
                 {hasLog && !isSel && (
                   <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-purple-500 rounded-full" />
                 )}
@@ -148,7 +148,6 @@ export default function History() {
                         )}
                       </div>
                       <div className="flex items-center gap-2 mt-0.5">
-                        {/* 💡 HINT: meal_time comes from the DB as "HH:MM:SS", we slice to show "HH:MM" */}
                         {meal.time && (
                           <p className="text-xs text-gray-400">{formatMealTime(meal.date, meal.time)}</p>
                         )}

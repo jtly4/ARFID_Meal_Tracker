@@ -1,11 +1,6 @@
 import { supabase } from '../supabase'
 import { addSafeFood } from './safeFoods'
 
-// 💡 HINT: All these functions are async — always use await when calling them in components
-// Example in a component: const meals = await getMeals()
-
-// ── CREATE ──────────────────────────────────────────────
-
 export async function logMeal({ date, time, meal_type, food_name, notes, mood, is_safe_food }) {
   // 💡 HINT: .insert() adds a new row. Pass an object matching your table columns.
   const { data, error } = await supabase
@@ -28,7 +23,6 @@ export async function searchMeals(query) {
   return data || []
 }
 
-// ── READ ─────────────────────────────────────────────────
 export async function getTodayMeals() {
   const today = new Date().toLocaleDateString('en-CA')
   const { data, error } = await supabase
@@ -42,7 +36,6 @@ export async function getTodayMeals() {
 }
 
 export async function getRecentMeals(limit = 3) {
-  // 💡 HINT: .limit() caps results. Returns the most recently logged meals for quick-fill.
   const { data, error } = await supabase
     .from('meals')
     .select('*')
@@ -62,7 +55,6 @@ export async function getRecentMeals(limit = 3) {
 }
 
 export async function getMealsForDate(date) {
-  // 💡 HINT: Used by History page to show meals for a selected day
   const { data, error } = await supabase
     .from('meals')
     .select('*')
@@ -75,7 +67,6 @@ export async function getMealsForDate(date) {
 
 
 export async function getMeals() {
-  // 💡 HINT: .order() sorts results. 'created_at' descending = newest first.
   const { data, error } = await supabase
     .from('meals')
     .select('*')
@@ -86,8 +77,6 @@ export async function getMeals() {
 }
 
 export async function getMealsForWeek(startDate, endDate) {
-  // 💡 HINT: .gte() = greater than or equal, .lte() = less than or equal
-  // startDate and endDate should be strings like '2024-01-01'
   const { data, error } = await supabase
     .from('meals')
     .select('*')
@@ -99,7 +88,6 @@ export async function getMealsForWeek(startDate, endDate) {
 }
 
 export async function getMealsForMonth(year, month) {
-  // 💡 HINT: String formatting trick — padStart ensures month is always 2 digits (01, 02, etc.)
   const startDate = new Date(year, month - 1, 1)
   const endDate = new Date(year, month, 0)
   
@@ -134,10 +122,7 @@ export async function updateMeal(id, updates){
   if (error) console.error('Error updating meal: ', error)
 }
 
-// ── DELETE ────────────────────────────────────────────────
-
 export async function deleteMeal(id) {
-  // 💡 HINT: .eq() filters by a column value — here it finds the row where id matches
   const { error } = await supabase
     .from('meals')
     .delete()
@@ -146,11 +131,7 @@ export async function deleteMeal(id) {
   if (error) console.error('Error deleting meal:', error)
 }
 
-// ── STATS HELPERS ─────────────────────────────────────────
-
 export function getMostCommonMeal(meals) {
-  // 💡 HINT: This is pure JS — no Supabase needed. Count occurrences with a reduce,
-  // then find the key with the highest count.
   if (!meals.length) return null
 
   const counts = meals.reduce((acc, meal) => {
@@ -162,8 +143,6 @@ export function getMostCommonMeal(meals) {
 }
 
 export function getMoodCounts(meals) {
-  // 💡 HINT: Returns an array like [{ name: 'happy', value: 5 }, ...]
-  // This is the format Recharts PieChart expects!
   const counts = meals.reduce((acc, meal) => {
     if (meal.mood) acc[meal.mood] = (acc[meal.mood] || 0) + 1
     return acc

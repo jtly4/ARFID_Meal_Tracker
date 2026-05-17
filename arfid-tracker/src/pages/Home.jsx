@@ -4,7 +4,7 @@ import { getTodayMeals, formatMealTime } from '../db/meals'
 
 const MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snack']
 const MEAL_ICONS = { breakfast: '🌅', lunch: '☀️', dinner: '🌙', snack: '🍎' }
-const GOAL = 3 // target meals per day — adjust as needed
+const GOAL = 3 // target meals per day
 const MOOD_EMOJIS = { very_hard: '/very_hard.png', hard: '/hard.png', okay: '/ok.png', good: '/good.png', very_good: '/very_good.png'}
 
 

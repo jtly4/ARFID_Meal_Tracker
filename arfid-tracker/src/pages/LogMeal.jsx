@@ -17,7 +17,6 @@ export default function LogMeal() {
   const navigate  = useNavigate()
   const location  = useLocation()
 
-  // 💡 HINT: If user tapped a meal type on the home page, it's pre-selected via route state
   const preselected = location.state?.meal_type || 'breakfast'
   const editId = location.state?.editId || null
   const isEditing = !!editId
@@ -30,7 +29,7 @@ export default function LogMeal() {
   const [mood,        setMood]        = useState('')
   const [date,        setDate]        = useState(new Date().toLocaleDateString('en-CA'))
   const [mealTime,    setMealTime]    = useState(
-    new Date().toTimeString().slice(0, 5) // 💡 HINT: "HH:MM" format from current time
+    new Date().toTimeString().slice(0, 5)
   )
   const [isSafeFood,  setIsSafeFood]  = useState(false)
   const [recentMeals, setRecentMeals] = useState([])
@@ -108,7 +107,6 @@ export default function LogMeal() {
   }
 
   function quickFill(meal) {
-    // 💡 HINT: Tapping a recent meal pre-fills the form — user just tweaks and saves
     if (selectedRecentId === meal.id) {
       setSelectedRecentId(null)
       setFoodName('')
