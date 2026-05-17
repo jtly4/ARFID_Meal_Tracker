@@ -27,7 +27,6 @@ function getWeekRange(offset = 0) {
   const monday = new Date(now)
   monday.setDate(now.getDate() - ((day + 5) % 7) + offset * 7)
 
-  // 💡 HINT: Build YYYY-MM-DD manually from local date parts — avoids UTC timezone shift
   const fmt = d => {
     const y = d.getFullYear()
     const m = String(d.getMonth() + 1).padStart(2, '0')
@@ -36,7 +35,6 @@ function getWeekRange(offset = 0) {
   }
   const sunday = new Date(monday)
   sunday.setDate(monday.getDate() + 6)
-  // const fmt = d => d.toISOString().split('en-CA')[0]
   return { start: fmt(monday), end: fmt(sunday) }
 }
 
@@ -183,7 +181,6 @@ export default function Insights() {
         </div>
       )}
       
-      {/* 💡 HINT: These tabs are placeholders — build them out if you have time! */}
       {tab === 'Foods' && (
         <div className="text-center py-16 text-gray-400">
           <p className="text-4xl mb-3">🍽</p>

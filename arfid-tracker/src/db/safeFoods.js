@@ -15,8 +15,6 @@ export async function getSafeFoods() {
 }
 
 export async function addSafeFood(food_name) {
-  // 💡 HINT: The table has UNIQUE on food_name, so duplicates will error.
-  // You can check for this and show the user a friendly message.
   const { data, error } = await supabase
     .from('safe_foods')
     .insert({ food_name })

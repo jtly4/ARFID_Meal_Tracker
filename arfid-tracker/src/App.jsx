@@ -5,7 +5,6 @@ import SafeFoods from './pages/SafeFoods'
 import Insights from './pages/Insights'
 import History from './pages/History'
 
-// 💡 HINT: We separate the nav into its own component so it can use useNavigate
 function BottomNav() {
   const navigate = useNavigate()
 
@@ -25,7 +24,6 @@ function BottomNav() {
         <span>History</span>
       </NavLink>
 
-      {/* 💡 HINT: Center + button is bigger and purple — it navigates to the log meal page */}
       <button
         onClick={() => navigate('/log')}
         className="w-14 h-14 bg-purple-600 rounded-full flex items-center justify-center shadow-lg -mt-5 text-white text-2xl font-light"
