@@ -26,7 +26,8 @@ export default function Home() {
 
   const safeMeals           = meals.filter(m => m.is_safe_food).length
   const outsideComfortMeals = meals.filter(m => !m.is_safe_food).length
-  const totalMeals          = meals.length
+  const totalMeals          = meals.filter(m => m.meal_type !== 'snack').length
+
   const progress            = Math.min(totalMeals / GOAL, 1)
 
   // Which meal types have been logged today
@@ -110,14 +111,44 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Today's meal log */}
+      {meals.length > 0 && (
+        <div className="mt-4">
+          <p className="text-sm font-semibold text-gray-700 mb-3">Today's Log</p>
+          <div className="flex flex-col gap-2">
+            {meals.map(meal => (
+              <div key={meal.id} className="bg-white rounded-2xl px-4 py-3 shadow-sm flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">{MEAL_ICONS[meal.meal_type]}</span>
+                  
+                  <div>
+                    <p className="font-medium text-gray-800 text-sm">{meal.food_name}</p>
+                    
+                    <p className="text-xs text-gray-400 capitalize">
+                      {meal.meal_type}{meal.meal_time ? ` • ${meal.meal_time.slice(0, 5)}` : ''}
+                    </p>
+                  </div>
+                </div>
+                {meal.is_safe_food && (
+                  <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Safe</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ARFID Support Card */}
       <div className="bg-purple-50 rounded-2xl p-5 shadow-sm flex items-center justify-between">
         <div>
           <p className="font-semibold text-gray-800 text-sm">ARFID Support</p>
           <p className="text-xs text-gray-500 mt-0.5">You are not alone.</p>
-          <button className="text-purple-600 text-xs font-medium mt-2 flex items-center gap-1">
+          <a href="https://www.nationaleatingdisorders.org/avoidant-restrictive-food-intake-disorder-arfid/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-purple-600 text-xs font-medium mt-2 flex items-center gap-1">
             Learn more about ARFID →
-          </button>
+          </a>
         </div>
         <span className="text-4xl">🌱</span>
       </div>
