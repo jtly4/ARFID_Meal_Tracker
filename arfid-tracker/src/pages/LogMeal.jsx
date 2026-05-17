@@ -86,7 +86,7 @@ export default function LogMeal() {
     if (isEditing) {
       await updateMeal(editId, {
         date,
-        time:    mealTime,
+        time:    mealTime || null,
         meal_type:    mealType,
         food_name:    foodName.trim(),
         notes,

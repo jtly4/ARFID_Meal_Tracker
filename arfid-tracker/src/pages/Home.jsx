@@ -50,7 +50,7 @@ export default function Home() {
       {/* Today's Progress Card */}
       <div className="bg-white rounded-2xl p-5 shadow-sm mb-4">
         <p className="text-sm font-semibold text-gray-500 mb-4">Today's Progress</p>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
 
           {/* Circle progress */}
           {/* 💡 HINT: SVG circle trick — strokeDasharray is circumference, strokeDashoffset controls fill */}
@@ -115,7 +115,8 @@ export default function Home() {
       </div>
 
       {/* Today's meal log */}
-      {meals.map(meal => (
+      <div className="flex flex-col gap-2 mb-4">
+        {meals.map(meal => (
         <button key={meal.id}
           onClick={() => navigate('/log', { state: { editId: meal.id } })} 
           className="bg-white rounded-2xl px-4 py-3 shadow-sm flex items-center justify-between w-full text-left">
@@ -141,6 +142,8 @@ export default function Home() {
           )}
         </button>
       ))}
+      </div>
+      
 
       {/* ARFID Support Card */}
       <div className="bg-purple-50 rounded-2xl p-5 shadow-sm flex items-center justify-between">
