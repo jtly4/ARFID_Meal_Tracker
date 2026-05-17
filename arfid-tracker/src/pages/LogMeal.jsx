@@ -35,7 +35,7 @@ export default function LogMeal() {
   useEffect(() => { loadRecent() }, [])
 
   async function loadRecent() {
-    const data = await getRecentMeals(5) // last 5 meals
+    const data = await getRecentMeals(3) // last 3 meals
     setRecentMeals(data)
   }
 
@@ -59,7 +59,6 @@ export default function LogMeal() {
   function quickFill(meal) {
     // 💡 HINT: Tapping a recent meal pre-fills the form — user just tweaks and saves
     setFoodName(meal.food_name)
-    setMealType(meal.meal_type)
     setIsSafeFood(meal.is_safe_food || false)
   }
 
