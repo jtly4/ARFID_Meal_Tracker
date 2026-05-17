@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { logMeal, searchMeals, getRecentMeals } from '../db/meals'
+import { logMeal, searchMeals, getRecentMeals, formatMealTime } from '../db/meals'
 
 const MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snack']
 const MEAL_ICONS = { breakfast: '🌅', lunch: '☀️', dinner: '🌙', snack: '🍎' }
@@ -81,12 +81,6 @@ export default function LogMeal() {
     setIsSafeFood(meal.is_safe_food || false)
     setSelectedRecentId(meal.id)
   }
-
-  function formatMealTime(date, mealTime) {
-    if (!date || !mealTime) return ''
-    const timestamp = `${date}T${mealTime}`
-    return new Date(timestamp).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })
-}
 
   if (success) {
     return (

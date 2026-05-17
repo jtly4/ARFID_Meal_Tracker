@@ -145,3 +145,9 @@ export function getMoodCounts(meals) {
 
   return Object.entries(counts).map(([name, value]) => ({ name, value }))
 }
+
+export function formatMealTime(date, mealTime) {
+    if (!date || !mealTime) return ''
+    const timestamp = `${date}T${mealTime}`
+    return new Date(timestamp).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })
+}

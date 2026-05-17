@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getMealsForMonth, getMealsForDate } from '../db/meals'
+import { getMealsForMonth, getMealsForDate, formatMealTime } from '../db/meals'
 
 const DAYS    = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const MEAL_ICONS = { breakfast: '🌅', lunch: '☀️', dinner: '🌙', snack: '🍎' }
@@ -138,8 +138,8 @@ export default function History() {
                       </div>
                       <div className="flex items-center gap-2 mt-0.5">
                         {/* 💡 HINT: meal_time comes from the DB as "HH:MM:SS", we slice to show "HH:MM" */}
-                        {meal.meal_time && (
-                          <p className="text-xs text-gray-400">{meal.meal_time.slice(0, 5)}</p>
+                        {meal.time && (
+                          <p className="text-xs text-gray-400">{formatMealTime(meal.date, meal.time)}</p>
                         )}
                         <p className="text-xs text-gray-400 capitalize">{meal.meal_type}</p>
                       </div>
