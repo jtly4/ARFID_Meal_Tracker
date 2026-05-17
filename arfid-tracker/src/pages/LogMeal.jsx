@@ -22,6 +22,8 @@ export default function LogMeal() {
 
   const [mealType,    setMealType]    = useState(preselected)
   const [foodName,    setFoodName]    = useState('')
+  const [selectedRecentId, setSelectedRecentId] = useState(null)
+
   const [notes,       setNotes]       = useState('')
   const [mood,        setMood]        = useState('')
   const [date,        setDate]        = useState(new Date().toLocaleDateString('en-CA'))
@@ -75,7 +77,9 @@ export default function LogMeal() {
   function quickFill(meal) {
     // 💡 HINT: Tapping a recent meal pre-fills the form — user just tweaks and saves
     setFoodName(meal.food_name)
+    setMealType(meal.meal_type)
     setIsSafeFood(meal.is_safe_food || false)
+    setSelectedRecentId(meal.id)
   }
 
   function formatMealTime(date, mealTime) {
@@ -203,7 +207,7 @@ export default function LogMeal() {
                 key={meal.id}
                 onClick={() => quickFill(meal)}
                 className={`flex items-center justify-between bg-white border rounded-xl px-4 py-3 text-sm transition-all
-                  ${foodName === meal.food_name ? 'border-purple-400 bg-purple-50' : 'border-gray-100'}`}
+                  ${selectedRecentId === meal.id ? 'border-purple-400 bg-purple-50' : 'border-gray-100'}`}
               >
                 <div className="flex items-center gap-3">
                   <span>{MEAL_ICONS[meal.meal_type]}</span>
@@ -214,7 +218,7 @@ export default function LogMeal() {
                     )}
                   </div>
                 </div>
-                {foodName === meal.food_name && <span className="text-purple-500 text-base">✓</span>}
+                {selectedRecentId === meal.id && <span className="text-purple-500 text-base">✓</span>}
               </button>
             ))}
           </div>

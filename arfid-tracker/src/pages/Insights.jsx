@@ -20,34 +20,43 @@ const MOOD_LABELS = {
 
 const TABS = ['Overview', 'Foods', 'Feelings', 'Trends']
 
-function getWeekRange() {
+function getWeekRange(offset = 0) {
   const now    = new Date()
   const day    = now.getDay()
   const monday = new Date(now)
-  monday.setDate(now.getDate() - ((day + 6) % 7))
+  monday.setDate(now.getDate() - ((day + 7) % 7) + offset * 7)
+
+  // 💡 HINT: Build YYYY-MM-DD manually from local date parts — avoids UTC timezone shift
+  const fmt = d => {
+    const y = d.getFullYear()
+    const m = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    return `${y}-${m}-${day}`
+  }
   const sunday = new Date(monday)
   sunday.setDate(monday.getDate() + 6)
-  const fmt = d => d.toLocaleDateString('en-CA')
+  // const fmt = d => d.toISOString().split('en-CA')[0]
   return { start: fmt(monday), end: fmt(sunday) }
 }
 
-function weekLabel() {
-  const { start, end } = getWeekRange()
+function weekLabel(offset = 0) {
+  const { start, end } = getWeekRange(offset)
   const fmt = d => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
   return `${fmt(start)} – ${fmt(end)}`
 }
 
 export default function Insights() {
+  const [weekOffset, setWeekOffset] = useState(0)
   const [tab,        setTab]        = useState('Overview')
   const [meals,      setMeals]      = useState([])
   const [lastWeek,   setLastWeek]   = useState([])
   const [mostCommon, setMostCommon] = useState(null)
   const [moodData,   setMoodData]   = useState([])
 
-  useEffect(() => { loadStats() }, [])
+  useEffect(() => { loadStats(weekOffset) }, [weekOffset])
 
-  async function loadStats() {
-    const { start, end } = getWeekRange()
+  async function loadStats(offset = 0) {
+    const { start, end } = getWeekRange(weekOffset)
 
     // This week
     const data = await getMealsForWeek(start, end)
@@ -90,9 +99,13 @@ export default function Insights() {
         <div>
           {/* Week label */}
           <div className="flex items-center justify-between mb-4">
-            <span className="text-xs text-gray-400">This week</span>
-            <span className="text-xs text-gray-500">{weekLabel()}</span>
-          </div>
+            <button onClick={() => setWeekOffset(w => w - 1)} className="text-gray-400 text-xl px-2">‹</button>
+            <span className="text-xs text-gray-500">{weekLabel(weekOffset)}</span>
+            <button
+              onClick={() => setWeekOffset(w => Math.min(w + 1, 0))} // 💡 can't go into the future
+              className={`text-xl px-2 ${weekOffset === 0 ? 'text-gray-200' : 'text-gray-400'}`}
+            >›</button>
+        </div>
 
           {/* Stat cards */}
           <div className="grid grid-cols-2 gap-3 mb-5">
