@@ -1,4 +1,5 @@
 import { supabase } from '../supabase'
+import { addSafeFood } from './safeFoods'
 
 // 💡 HINT: All these functions are async — always use await when calling them in components
 // Example in a component: const meals = await getMeals()
@@ -12,6 +13,8 @@ export async function logMeal({ date, meal_type, food_name, notes, mood, is_safe
     .insert({ date, meal_type, food_name, notes, mood, is_safe_food })
 
   if (error) console.error('Error logging meal:', error)
+  if (is_safe_food) await addSafeFood(food_name)
+
   return data
 }
 
