@@ -53,7 +53,6 @@ export default function LogMeal() {
     })
 
     setSuccess(true)
-    setTimeout(() => navigate('/'), 1500) // go home after success
   }
 
   function quickFill(meal) {
