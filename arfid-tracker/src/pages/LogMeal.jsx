@@ -76,8 +76,14 @@ export default function LogMeal() {
 
   function quickFill(meal) {
     // 💡 HINT: Tapping a recent meal pre-fills the form — user just tweaks and saves
+    if (selectedRecentId === meal.id) {
+      setSelectedRecentId(null)
+      setFoodName('')
+      setIsSafeFood(false)
+      return
+    }
+    
     setFoodName(meal.food_name)
-    setMealType(meal.meal_type)
     setIsSafeFood(meal.is_safe_food || false)
     setSelectedRecentId(meal.id)
   }
